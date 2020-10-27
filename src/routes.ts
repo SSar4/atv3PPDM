@@ -9,11 +9,12 @@ const routes = express.Router();
 const docController = new DocController();
 
 routes.get('/',(req,res)=>{
-    res.send('inicio...')
+   res.send('inicio...')
 });
 
 routes.get('/projetos',docController.search);//rota para listar tds os projetos funciona no navegador para testar
 routes.post('/projetos',docController.create);//insere projetos com os dados enviados no corpo da requisição
+routes.put('/projetos/:id',docController.change);//altera o projeto
 routes.delete('/projetos/:id',docController.remove);
 routes.get('/projetos/:id',docController.searchID);
 

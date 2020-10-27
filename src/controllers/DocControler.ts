@@ -46,6 +46,28 @@ class DocController {
         return res.json(doc)
     }
 
+    async change(req: Request, res: Response){
+        const id_doc = req.params.id
+        const trx = await knex.transaction()      
+
+        const {url, title} = req.body
+
+        const project = {
+            url,
+            title
+        }
+                  
+        const doc = await  trx('doc').where('id', id_doc).update({url, title})
+        if(doc === 0){
+            return res.status(400).json({error:'arquivo não encontrado'})
+        }
+            
+        const docExists = await  trx('doc').select('doc.*').where('id', id_doc)
+        await trx.commit()
+        return res.json(docExists)      
+
+    }
+
     async remove(req:Request, res:Response){
         const id_doc = req.params.id
         const doc = await knex('doc').where('id', id_doc).del()
