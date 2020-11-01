@@ -13,20 +13,19 @@ class DocController {
 
     //listar por id
     async searchID(req: Request, res: Response){
-        const id_doc = req.params.id
+        const id_doc= req.params.id
         const trx = await knex.transaction()
-        const docExists = await  trx('doc').where('id', id_doc).first()
-                
-        if(!docExists){
-            return res.status(400).json({error:'arquivo não encontrado'})
 
-        }        
-           
-        
-        return res.json(docExists)
-
+        const docExists = await  trx('doc').where('id',id_doc).first();
        
-    }
+        if(!docExists){ 
+            
+            return res.status(400).json({error:'documento não encontrado'});
+        } 
+        
+        return res.json(docExists)  
+    }  
+
 
     //insere documentos
     async create(req: Request, res: Response){
@@ -59,7 +58,7 @@ class DocController {
             title
         }
         const docExists = await  trx('doc').where('id', id_doc).update({url, title}) 
-        const doc = await  trx('doc').where('id', id_doc).first()             
+        const doc = await  trx('doc').where('id', id_doc).first()           
         
 
         if(!docExists){
@@ -74,7 +73,7 @@ class DocController {
         const id_doc = req.params.id
         const doc = await knex('doc').where('id', id_doc).del()
         if(doc === 0){
-            return res.send('este arquivo ja nao existe mais')
+            return res.status(400).json({error:'documento deletado'})
         }
         return res.send('documento deletado')
     }

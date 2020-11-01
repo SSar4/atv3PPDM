@@ -18,4 +18,4 @@ routes.put('/projetos/:id',docController.update);// utualiza projeto
 routes.delete('/projetos/:id',docController.remove);
 routes.get('/projetos/:id',docController.searchID);
 
-export default routes;
+export default routes; 
