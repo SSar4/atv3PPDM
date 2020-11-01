@@ -15,12 +15,17 @@ class DocController {
     async searchID(req: Request, res: Response){
         const id_doc = req.params.id
         const trx = await knex.transaction()
-        const docExists = await  trx('doc').select('doc.*').where('id', id_doc).first()
-
-        if(docExists === 0){
+        const docExists = await  trx('doc').where('id', id_doc).first()
+                
+        if(!docExists){
             return res.status(400).json({error:'arquivo não encontrado'})
-        }
+
+        }        
+           
+        
         return res.json(docExists)
+
+       
     }
 
     //insere documentos
@@ -53,11 +58,11 @@ class DocController {
             url,
             title
         }
-        const docExists = await  trx('doc').where('id', id_doc).update({url, title})
-        console.log("entrou")
-       
-        const doc = await  trx('doc').select('doc.*').where('id', id_doc).first()
-        if(!doc){
+        const docExists = await  trx('doc').where('id', id_doc).update({url, title}) 
+        const doc = await  trx('doc').where('id', id_doc).first()             
+        
+
+        if(!docExists){
             return res.status(400).json({error:'arquivo não encontrado'})
         }
         await trx.commit()
