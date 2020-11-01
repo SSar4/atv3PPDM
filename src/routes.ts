@@ -17,4 +17,4 @@ routes.post('/projetos',docController.create);//insere projetos com os dados env
 routes.delete('/projetos/:id',docController.remove);
 routes.get('/projetos/:id',docController.searchID);
 
-export default routes;
+export default routes; 
