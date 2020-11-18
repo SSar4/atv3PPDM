@@ -27,25 +27,25 @@ class DocController {
 
     //insere documentos
     async create(req: Request, res: Response){
-        const {url, title} = req.body
+        const {url, title} = req.body;
 
-        const project = {
-            url,
-            title
-        }
+      
         //inicia uma transação
         const trx = await knex.transaction()
         const docExists = await trx('doc').where('url', url).first()
 
         if(docExists){
             await trx.rollback()
-            return res.json({error:'erro'})
+            return res.json({erro:'Projeto ja existe'})
         }
 
-        const doc = await trx('doc').insert(project)
+        const doc = await trx('doc').insert({
+            url,
+            title 
+        })
         //se chegou aki e pq deu tudo certo e salva no banco
         await trx.commit()
-        return res.json(doc)
+        return res.json({sucesso:'Projeto inserido com sucesso!'})
     }
 
     async change(req: Request, res: Response){
